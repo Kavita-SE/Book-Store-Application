@@ -1,6 +1,7 @@
 package com.accolite.BookStore.controller;
 
 import com.accolite.BookStore.entity.Book;
+import com.accolite.BookStore.entity.BookInventory;
 import com.accolite.BookStore.entity.User;
 import com.accolite.BookStore.service.BookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,27 @@ public class BookStoreController {
     @PutMapping("/users/borrowBook/{userId}/{bookId}")
     private ResponseEntity<HttpStatus> borrowBook(@PathVariable long userId, @PathVariable long bookId){
         return bookStoreService.borrowBook(userId,bookId);
+    }
+
+    @PostMapping("/books/addcopies")
+    private ResponseEntity<HttpStatus> addCopies( @RequestBody BookInventory bookInventory){
+        bookStoreService.addCopies(bookInventory);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/books/returnBook/{borrowId}")
+    private ResponseEntity<HttpStatus> returnBook(@PathVariable int borrowId){
+        return bookStoreService.returnBook(borrowId);
+    }
+
+    @PostMapping("/books/reviewBook/{userId}/{bookId}")
+    private ResponseEntity<HttpStatus> reviewBook(@PathVariable int userId,@PathVariable int bookId, @RequestBody String review){
+        return bookStoreService.reviewBook(userId,bookId,review);
+    }
+
+    @PostMapping("/books/like/{userId}/{bookId}")
+    private ResponseEntity<HttpStatus> likeBook(@PathVariable int userId, @PathVariable int bookId){
+        return bookStoreService.likeBook(userId,bookId);
     }
 
 }
