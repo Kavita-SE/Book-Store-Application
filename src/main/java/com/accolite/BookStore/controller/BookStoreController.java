@@ -1,5 +1,6 @@
 package com.accolite.BookStore.controller;
 
+import com.accolite.BookStore.entity.Book;
 import com.accolite.BookStore.entity.User;
 import com.accolite.BookStore.service.BookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class BookStoreController {
     @Autowired
     private BookStoreService bookStoreService;
 
+    /* --------         User's related TestCases            -------- */
     @PostMapping("/users/add")
     private ResponseEntity<User> saveUser(@RequestBody User user) {
         return ResponseEntity.ok().body(this.bookStoreService.createUser(user));
@@ -30,13 +32,30 @@ public class BookStoreController {
         return bookStoreService.suspendUser(userId);
     }
 
-    @GetMapping("/listUsers")
+    @GetMapping("users/listUsers")
     private ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok().body(this.bookStoreService.getUsers());
     }
 
-    @PutMapping("/user/addmoney/{id}/{amount}")
-    public ResponseEntity<User> addMoneyUser(@PathVariable long userId, @PathVariable int amount) {
-        return bookStoreService.addMoneyUser(userId,amount);
+    @PutMapping("/users/addMoneytoWallet/{userId}/{amount}")
+    public ResponseEntity<User> addMoneyToWallet(@PathVariable long userId, @PathVariable int amount) {
+        return bookStoreService.addMoneyToWallet(userId,amount);
     }
+
+    /* --------         Book's related TestCases            -------- */
+
+    @PostMapping("/books/addBook")
+    private ResponseEntity<Book> saveBook(@RequestBody Book book) {
+        return ResponseEntity.ok().body(this.bookStoreService.createBook(book));
+    }
+
+    @GetMapping("/books/listBooks")
+    private ResponseEntity<List<Book>> getAllBooks(){
+        return ResponseEntity.ok().body(this.bookStoreService.getBooks());
+    }
+    @PutMapping("/users/borrowBook/{userId}/{bookId}")
+    private ResponseEntity<HttpStatus> borrowBook(@PathVariable long userId, @PathVariable long bookId){
+        return bookStoreService.borrowBook(userId,bookId);
+    }
+
 }
